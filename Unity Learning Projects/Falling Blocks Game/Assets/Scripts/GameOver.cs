@@ -5,27 +5,30 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour {
-  public GameObject gameOverScreen;
-  public GameObject timeKeeper;
-  public Text secondsSurvivedUI;
-  bool gameOver;
+    public GameObject gameOverScreen;
+    public GameObject timeKeeper;
+    public Text secondsSurvivedUI;
+    bool gameOver;
 
-  void Start() {
-    FindObjectOfType<PlayerControl> ().OnPlayerDeath += OnGameOver;
-  }
-  // Update is called once per frame
-  void Update() {
-    if(gameOver){
-      if (Input.GetKeyDown(KeyCode.Space)){
-        SceneManager.LoadScene(0);
-      }
+    void Start() {
+        FindObjectOfType<PlayerControl>().OnPlayerDeath += OnGameOver;
     }
-  }
+    // Update is called once per frame
+    void Update() {
+        if (gameOver) {
+            if (Input.touchCount > 0) {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began) {
+                    SceneManager.LoadScene("Game");
+                }
+            }
+        }
+    }
 
-  void OnGameOver(){
-      gameOverScreen.SetActive (true);
-      timeKeeper.SetActive (false);
-      secondsSurvivedUI.text = Time.timeSinceLevelLoad.ToString("F1");
-      gameOver = true;
-  }
+    void OnGameOver() {
+        gameOverScreen.SetActive(true);
+        timeKeeper.SetActive(false);
+        secondsSurvivedUI.text = Time.timeSinceLevelLoad.ToString("F1");
+        gameOver = true;
+    }
 }
